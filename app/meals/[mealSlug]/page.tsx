@@ -10,17 +10,27 @@ const MealsDetailsPage = async ({params}: any) => {
     notFound();
   }
   const {title, summary, image, creator, creator_email, instructions} = aMeal;
-
-  const newInstructions = instructions.replaceAll('\n', '<br/>');
+  let newInstructions = "";
+  if(instructions) {
+    newInstructions = instructions.replace(/\r?\n|\r/g, '<br>');
+  }
+  let newTitle = "";
+  if(title) {
+    newTitle = title;
+  }
+  let newImage = "";
+  if(image && typeof image === "string") {
+    newImage = image;
+  }
 
   return (
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image fill alt={title} src={image}/>
+          <Image fill alt={newTitle} src={newImage}/>
         </div>
         <div className={classes.headerText}>
-          <h1>{title}</h1>
+          <h1>{newTitle}</h1>
           <p className={classes.creator}>
             by <a href={`mailto:${creator_email}`}>{creator}</a>
           </p>

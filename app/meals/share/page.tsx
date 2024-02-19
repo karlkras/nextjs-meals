@@ -3,6 +3,7 @@
 import classes from './page.module.css';
 import ImagePicker from "@/components/meals/image-picker";
 import { shareMealAction } from "@/actions";
+import MealSubmissionButton from "@/components/meals/meal-submission-button";
 
 const ShareMealPage = () => {
 
@@ -19,7 +20,7 @@ const ShareMealPage = () => {
           <div className={classes.row}>
             <p>
               <label htmlFor="name">Your name</label>
-              <input type="text" id="name" name="name" required />
+              <input type="text" id="name" name="name" />
             </p>
             <p>
               <label htmlFor="email">Your email</label>
@@ -45,7 +46,7 @@ const ShareMealPage = () => {
           </p>
           <ImagePicker />
           <p className={classes.actions}>
-            <button type="submit">Share Meal</button>
+            <MealSubmissionButton />
           </p>
         </form>
       </main>

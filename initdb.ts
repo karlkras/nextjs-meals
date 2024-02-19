@@ -164,6 +164,7 @@ const dummyMeals = [
   },
 ];
 
+// noinspection SqlNoDataSourceInspection,SqlDialectInspection
 db.prepare(`
    CREATE TABLE IF NOT EXISTS meals (
        id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -178,6 +179,7 @@ db.prepare(`
 `).run();
 
 async function initData() {
+  // noinspection SqlNoDataSourceInspection,SqlDialectInspection
   const stmt = db.prepare(`
       INSERT INTO meals VALUES (
          null,
@@ -196,4 +198,4 @@ async function initData() {
   }
 }
 
-initData().then(r => {});
+initData().then(() => {});
