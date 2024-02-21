@@ -1,8 +1,13 @@
 'use server';
 import { type MealItemProps, saveMeal } from "@/db/meals";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
-export const shareMealAction = async (formData: FormData) => {
+export type ReturnType = {
+  message: string | null;
+}
+
+export const shareMealAction = async ( prevState: ReturnType, formData: FormData): Promise<ReturnType> => {
   const meal: MealItemProps = {
     title: formData.get("title") as string,
     summary: formData.get("summary") as string,
@@ -17,10 +22,11 @@ export const shareMealAction = async (formData: FormData) => {
   if(!validationResult.isvalid) {
     // do some error
     console.log(`Error: ${validationResult.message}`)
-    throw new Error(validationResult.message as string);
+    return { message: validationResult.message as string }
   }
 
   await saveMeal(meal);
+  revalidatePath('/meals');
 
   redirect("/meals")
 
@@ -28,7 +34,6 @@ export const shareMealAction = async (formData: FormData) => {
 
 const ValidateMealEntry = (mealEntry: MealItemProps): { isvalid: boolean, message : string | null} => {
   let messageData: string | null = null;
-  let isValid = true;
   for (const [key, value] of Object.entries(mealEntry)) {
     if(typeof value === "string") {
       if(!value || value.trim().length === 0) {

@@ -1,16 +1,25 @@
 import Link from 'next/link';
 import Image from 'next/image';
-
 import classes from './meal-item.module.css';
 import { MealItemProps } from "@/db/meals";
 
+export const MealItem = ({ title, slug, image, summary, creator }: MealItemProps) => {
 
-export default function MealItem({ title, slug, image, summary, creator }: MealItemProps) {
+  let newImage = "";
+  if(typeof image === "string") {
+    newImage = image;
+  }
+  let newTitle = "";
+  if(typeof title === "string") {
+    newTitle = title;
+  }
+
+
   return (
     <article className={classes.meal}>
       <header>
         <div className={classes.image}>
-          <Image src={image} alt={title} fill />
+          <Image src={`${process.env.AWS_IMAGE_URL}/${newImage}`} alt={newTitle} fill />
         </div>
         <div className={classes.headerText}>
           <h2>{title}</h2>
@@ -26,3 +35,5 @@ export default function MealItem({ title, slug, image, summary, creator }: MealI
     </article>
   );
 }
+
+export default MealItem;

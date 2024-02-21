@@ -3,6 +3,18 @@ import Image from "next/image";
 import { getMeal } from "@/db/meals";
 import { notFound } from "next/navigation";
 
+export const generateMetadata = async ({params}: any) => {
+  const slugName = params.hasOwnProperty("mealSlug") ? params.mealSlug : "";
+  const aMeal = getMeal(slugName);
+  if(!aMeal) {
+    notFound();
+  }
+  const {title, summary} = aMeal;
+  return {
+    title, description: summary
+  }
+}
+
 const MealsDetailsPage = async ({params}: any) => {
   const slugName = params.hasOwnProperty("mealSlug") ? params.mealSlug : "";
   const aMeal = getMeal(slugName);
@@ -20,7 +32,7 @@ const MealsDetailsPage = async ({params}: any) => {
   }
   let newImage = "";
   if(image && typeof image === "string") {
-    newImage = image;
+    newImage = `${process.env.AWS_IMAGE_URL}/${image}`;
   }
 
   return (
